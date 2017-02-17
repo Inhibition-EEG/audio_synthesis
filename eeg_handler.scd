@@ -21,7 +21,7 @@
 		// calculate DC OFFSET
 		"sox temp_eeg_1.wav -n stats 2> temp_eeg_1.stats".systemCmd;
 		1.do{ arg i; // this is stupid code to be refactored in the future, I simply changed the stereo version to a mono one directly here
-			var file = File("temp_eeg_" ++ (i + 1) ++".wav","r");
+			var file = File("temp_eeg_" ++ (i + 1) ++".stats","r");
 			var offset = file.getLine(1024);
 			var data;
 			offset = offset[offset.find("0")..].asFloat * (-1);
