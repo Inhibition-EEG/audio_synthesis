@@ -23,10 +23,6 @@
 					SpecCentroid.kr(fft), // spectral centroid
 					SpecFlatness.kr(fft), // spectral flatness
 					SpecPcile.kr(fft,0.8) // 80-SpecPcile
-					//FFTCrest.kr(fft), // spectral crest
-					// SensoryDissonance.kr(fft), // Sensory Dissonance
-					// FFTSpread.kr(fft) * 0.000001,
-					// FFTSlope.kr(fft)
 				];
 				BufWr.kr(analysis, analysisBuffer, pulseCount, loop: 0); // write analysis data
 				BufWr.kr(pulseCount, analysisBuffer, DC.kr(0), 0); // at index 0 write the pulse count so that the number of measurements is known
@@ -37,7 +33,6 @@
 			// write analysis data to temporary files
 			[2, analysisBuffer.writeMsg("temp_analysis.aiff", headerFormat: "AIFF", sampleFormat: "float")]
 		]);
-
 		score.recordNRT("temp_analysis.osc", "/dev/null", filePath, sampleRate: 4000,
 			options: ServerOptions.new
 			.verbosity_(-1)
@@ -46,7 +41,6 @@
 			.sampleRate_(4000),
 			action: { condition.test_(true).signal;} // update Condition
 		);
-
 		condition;
 	};
 	~getResults = {
@@ -66,7 +60,3 @@
 		data;
 	};
 }
-
-
-
-

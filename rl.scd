@@ -9,7 +9,7 @@
 ~rl_handler.use{
 	~target = 10;
 	~previous_pitch = 10;
-	~previous_features =  Dictionary[(\pitch->10),(\centroid->0),(\complexity->0),(\weightedspectralmaximum->0),(\sharpness->0),(\dissonance->0),(\spread->0),(\slope->0)]!2; 
+	~previous_features =  Dictionary[(\pitch->10),(\centroid->0),(\complexity->0),(\weightedspectralmaximum->0)]; 
 	~possibilities = Dictionary[
 		(\duration -> [25,28,30,36,40,47,50,55,60,67,74]),
 		(\vibRate -> [0.25,0.5,1,2,3,4,6,8,16]),
@@ -36,18 +36,14 @@
 		var possibilities = ~rl_handler[\possibilities];
 		"creating training data".postln;
 		"rm train.data".systemCmd;
-		"echo 1 8 8 >> train.data".systemCmd;
+		"echo 1 4 8 >> train.data".systemCmd;
 		// map to a 0,1 range
 		// double check that the ranges are correct
 		f = f ++
 		ControlSpec(0,30).unmap(features[\pitch]) ++ " " ++ 
 		ControlSpec(0,30).unmap(features[\centroid]) ++ " " ++ 
 		features[\complexity] ++ " " ++ 
-		ControlSpec(2,60).unmap(features[\weightedspectralmaximum]) ++ " " ++ 
-		ControlSpec(0,700).unmap(features[\sharpness]) ++ " " ++ 
-		features[\dissonance] ++ " " ++ 
-		ControlSpec(-15,15).unmap(features[\spread]) ++ " " ++ 
-		ControlSpec(-15,15).unmap(features[\slope]) ++ " ";
+		ControlSpec(2,60).unmap(features[\weightedspectralmaximum]);
 		("echo " ++ f ++ " >> train.data").systemCmd;
 		a = a ++
 		ControlSpec(0,possibilities[\duration].size).unmap(actions[\duration]) ++ " " ++
@@ -128,7 +124,7 @@
 				} {
 					indices[k] = possibilities[k].size.rand;
 				};
-			};	
+			};
 		} { // if the reward is not very good rely primarily on random values
 			indices.keysDo{ arg k,i;
 				if (0.4.coin) { 
@@ -136,7 +132,7 @@
 				} {
 					indices[k] = possibilities[k].size.rand;
 				};
-			};	
+			};
 		};
 	}; 
 };
