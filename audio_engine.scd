@@ -44,10 +44,10 @@ var master_channel = 35;
 							100.do{ // morph with previous contents !!
 								if (~sensors_handler[\is_headset_on].()) { // this is a very ugly hack but the truth is that it simplifies the whole architecture a lot... so be it
 									~audio_engine[\previous_signal] = ~audio_engine[\previous_signal].blend(signal,0.03);
-									0.04.wait; // wait a bit to morph it smoothly
+									~audio_engine[\buffer].sendCollection(~audio_engine[\previous_signal].normalize.asWavetable);
+									0.03.wait; // wait a bit to morph it smoothly
 								};
 							};
-							~audio_engine[\buffer].sendCollection(~audio_engine[\previous_signal].normalize.asWavetable);
 							// free the condition
 							condition.test_(true);
 							condition.signal;
