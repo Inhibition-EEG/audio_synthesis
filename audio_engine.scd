@@ -44,7 +44,7 @@ var master_channel = 35;
 							100.do{ // morph with previous contents !!
 								if (~sensors_handler[\is_headset_on].()) { // this is a very ugly hack but the truth is that it simplifies the whole architecture a lot... so be it
 									~audio_engine[\previous_signal] = ~audio_engine[\previous_signal].blend(signal,0.03);
-									0.01.wait; // wait a bit to morph it smoothly
+									0.04.wait; // wait a bit to morph it smoothly
 								};
 							};
 							~audio_engine[\buffer].sendCollection(~audio_engine[\previous_signal].normalize.asWavetable);
@@ -68,23 +68,25 @@ Routine({
 	var signal = Signal.hanningWindow(128);
 	~audio_engine[\buffer].sendCollection(signal.asWavetable);
 	loop{ // loop
-		var parameters = ~audio_engine[\parameters];
-		var target_frequency = parameters[\target];
 		if (~audio_engine[\run]) {
+			var parameters = ~audio_engine[\parameters];
+			var target_frequency = parameters[\target];
 			var wait = parameters[\duration];
 			parameters[\density].do{
-				var freq;
+				var freq,freqs;
 				var timbre = [\eeg_osc,\osc].wchoose([0.3,0.7]);
 				if (target_frequency > 6 ) { 
 					freq = target_frequency * [10,20,100,200,1000].wchoose([0.3,0.2,0.25,0.2,0.05]);
 					if (freq > 350 ) { // create a beat if it makes some sense
-						freq = [freq,freq+target_frequency]; 
+						freqs = [freq,freq+target_frequency]; 
+					} {
+						freqs = [freq];
 					};
 				} {
 					freq = target_frequency * [20,200,1000].choose;
-					freq = [freq,freq+target_frequency]; // always create a beat
+					freqs = [freq,freq+target_frequency]; // always create a beat
 				};
-				freq.do {arg f;
+				freqs.do {arg f;
 					Synth(timbre, // randomly choose a vosc or osc
 						[   \freq, f, \vibRate, parameters[\vibRate], \dur, wait * 1.4,
 								\out, master_channel,\pan, parameters[\pan],

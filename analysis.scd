@@ -8,6 +8,7 @@
 ~analysis.use{
 	~run = { arg filePath;
 		var analysisBuffer;
+		var inputBuffer;
 		var condition = Condition.new(false);
 		var score = Score([
 			[0, (analysisBuffer = Buffer.new(Server.default, 2, 4)).allocMsg ], // a 4-channel Buffer
@@ -17,7 +18,7 @@
 				var fft = FFT(LocalBuf(1024, 1), sig); // fft analysis
 				var pulseCount = PulseCount.kr(Impulse.kr(1.8.reciprocal)); // triggers (every timeInterval)
 				var pitch,hasPitch, analysis; 
-				# pitch, hasPitch = Pitch.kr(sig);
+				# pitch, hasPitch = Tartini.kr(sig);
 				analysis = [ // analysis UGens herein
 					pitch,
 					SpecCentroid.kr(fft), // spectral centroid
@@ -33,7 +34,7 @@
 			// write analysis data to temporary files
 			[2, analysisBuffer.writeMsg("temp_analysis.aiff", headerFormat: "AIFF", sampleFormat: "float")]
 		]);
-		score.recordNRT("temp_analysis.osc", "/dev/null", filePath, sampleRate: 4000,
+		score.recordNRT("temp_analysis.osc", "/dev/null", filePath, sampleRate: 4000, /* sampleRate is also hardcoded to 4000, keep that in mind */
 			options: ServerOptions.new
 			.verbosity_(-1)
 			.numInputBusChannels_(1)

@@ -23,7 +23,7 @@
 		("sox temp_eeg.wav eeg.wav" ++" lowpass 25 fade 0.1 0 0.1 dcshift "++dcshift).systemCmd;
 		// analyse
 		~analysis[\run].value("eeg.wav").wait;
-		data = ~analysis[\getResults].value();
+		data = ~analysis[\getResults].value().postln;
 		features[\pitch] = data[0][0];
 		features[\centroid] = data[1][0];
 		features[\complexity] = data[2][0];
