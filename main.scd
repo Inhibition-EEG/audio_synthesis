@@ -48,7 +48,7 @@ Server.default.waitForBoot({
 		};
 	}}).play(AppClock);
 	Routine({loop{
-		if (~sensors_handler[\].()) { // if power_off button is pressed
+		if (~sensors_handler[\should_I_power_off].()) { // if power_off button is pressed
 			~sensors_handler[\power_off].();
 		};
 		1.wait;
