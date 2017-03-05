@@ -15,10 +15,18 @@
 		(value.asInt / 1023);
 	};
 	~led_on = {
-		"source /usr/local/bin/gpio.sh && gpio_output CSID5 1".unixCmd;
+		"source /usr/local/bin/gpio.sh && gpio_output CSID1 1".unixCmd;
 	};
 	~led_off = {
-		"source /usr/local/bin/gpio.sh && gpio_output CSID5 0".unixCmd;
+		"source /usr/local/bin/gpio.sh && gpio_output CSID1 0".unixCmd;
+	}
+	~should_I_power_off = {
+		var stdout  = "source /usr/local/bin/gpio.sh && gpio_input XIO_P3; VAL=$? && echo $VAL".unixCmdGetStdOut;
+		stdout.asInt.asBoolean.not;
+	}
+	~power_off = {
+		"shutdown -h now".unixCmd;
+		0.exit;
 	}
 }
 

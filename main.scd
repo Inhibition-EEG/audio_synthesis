@@ -47,6 +47,12 @@ Server.default.waitForBoot({
 			1.wait;
 		};
 	}}).play(AppClock);
+	Routine({loop{
+		if (~sensors_handler[\should_I_power_off].()) { // if power_off button is pressed
+			~sensors_handler[\power_off].();
+		};
+		1.wait;
+	}}).play(AppClock);
 	Routine({loop{ // this won't be very responsive unfortunately as all the asynchronous calls of the previous loop will freeze this one too
 		~audio_engine[\master_synth].set(\amp, ~sensors_handler[\get_pot_value].() * 0.7); // that won't be very responsive on purpose
 		0.1.wait;
