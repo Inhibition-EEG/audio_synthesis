@@ -19,11 +19,11 @@
 	};
 	~led_off = {
 		"source /usr/local/bin/gpio.sh && gpio_output CSID1 0".unixCmd;
-	}
+	};
 	~should_I_power_off = {
 		var stdout  = "source /usr/local/bin/gpio.sh && gpio_input XIO_P3; VAL=$? && echo $VAL".unixCmdGetStdOut;
 		stdout.asInt.asBoolean.not;
-	}
+	};
 	~power_off = {
 		"shutdown -h now".unixCmd;
 		0.exit;
