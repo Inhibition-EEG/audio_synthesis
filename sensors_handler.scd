@@ -25,7 +25,7 @@
 		stdout.asInt.asBoolean.not;
 	};
 	~power_off = {
-		"shutdown -h now".unixCmd;
+		"sudo shutdown -h now".unixCmd;
 		0.exit;
 	}
 }
